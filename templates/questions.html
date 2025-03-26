@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gestor de Tareas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #a29bfe;
+            --success-color: #00b894;
+            --warning-color: #fdcb6e;
+            --danger-color: #d63031;
+            --text-dark: #2d3436;
+            --text-light: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 40px;
+            color: var(--text-dark);
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Contenedor principal */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Sección de agregar tarea */
+        .add-task {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .add-task:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .add-task h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .add-task h2 i {
+            color: var(--secondary-color);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        .form-group input, 
+        .form-group textarea, 
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background-color: #f8f9fa;
+        }
+
+        .form-group input:focus, 
+        .form-group textarea:focus, 
+        .form-group select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+            background-color: white;
+        }
+
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            width: 100%;
+            padding: 14px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #5d4bdb, #8e7cff);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+        }
+
+        /* Tabla de tareas */
+        .tasks-table-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(240, 240, 240, 0.5);
+        }
+
+        tr:hover {
+            background-color: rgba(200, 200, 255, 0.1);
+        }
+
+        /* Estado de las tareas */
+        .status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-pendiente {
+            background-color: #ffeaa7;
+            color: #e17055;
+        }
+
+        .status-en-proceso {
+            background-color: #81ecec;
+            color: #0984e3;
+        }
+
+        .status-completada {
+            background-color: #55efc4;
+            color: #00b894;
+        }
+
+        /* Botones de acción */
+        .action-form {
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .action-select {
+            padding: 8px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .action-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .action-btn i {
+            font-size: 0.9rem;
+        }
+
+        .update-btn {
+            background-color: var(--warning-color);
+            color: #2d3436;
+        }
+
+        .update-btn:hover {
+            background-color: #f7b731;
+            transform: translateY(-2px);
+        }
+
+        .delete-btn {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        /* Mensaje cuando no hay tareas */
+        .no-tasks {
+            text-align: center;
+            padding: 30px;
+            color: #636e72;
+            font-size: 1.1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px;
+            }
+            
+            th, td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+            
+            .action-form {
+                display: block;
+                margin-bottom: 5px;
+            }
+            
+            .action-select, .action-btn {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <h1><i class="fas fa-tasks"></i> Gestor de Tareas</h1>
+        
+        <!-- Formulario para agregar nueva tarea -->
+        <div class="add-task">
+            <h2><i class="fas fa-plus-circle"></i> Agregar Nueva Tarea</h2>
+            <form action="{{ url_for('manejar_tareas') }}" method="post">
+                <div class="form-group">
+                    <label for="name">Nombre de la tarea:</label>
+                    <input type="text" id="name" name="name" placeholder="Ej: Revisar documento final" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Descripción:</label>
+                    <textarea id="description" name="description" placeholder="Detalles de la tarea..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="status">Estado inicial:</label>
+                    <select id="status" name="status">
+                        <option value="pendiente">Pendiente</option>
+                        <option value="en proceso">En Proceso</option>
+                        <option value="completada">Completada</option>
+                    </select>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-plus"></i> Agregar Tarea
+                </button>
+            </form>
+        </div>
+        
+        <!-- Tabla de tareas existentes -->
+        <div class="tasks-table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tarea</th>
+                        <th>Descripción</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if tareas %}
+                        {% for tarea in tareas %}
+                            <tr>
+                                <td>{{ tarea.id }}</td>
+                                <td>{{ tarea.name }}</td>
+                                <td>{{ tarea.description }}</td>
+                                <td>
+                                    <span class="status status-{{ tarea.status.replace(' ', '-') }}">
+                                        {{ tarea.status }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <form class="action-form" action="{{ url_for('actualizar_tarea', task_id=tarea.id) }}" method="post">
+                                        <select class="action-select" name="status">
+                                            <option value="pendiente" {% if tarea.status == 'pendiente' %}selected{% endif %}>Pendiente</option>
+                                            <option value="en proceso" {% if tarea.status == 'en proceso' %}selected{% endif %}>En Proceso</option>
+                                            <option value="completada" {% if tarea.status == 'completada' %}selected{% endif %}>Completada</option>
+                                        </select>
+                                        <button type="submit" class="action-btn update-btn">
+                                            <i class="fas fa-sync-alt"></i> Actualizar
+                                        </button>
+                                    </form>
+                                    <form class="action-form" action="{{ url_for('eliminar_tarea', task_id=tarea.id) }}" method="post">
+                                        <button type="submit" class="action-btn delete-btn">
+                                            <i class="fas fa-trash-alt"></i> Eliminar
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="no-tasks">
+                                <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                                <p>No hay tareas registradas</p>
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Animación al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = [document.querySelector('.add-task'), document.querySelector('.tasks-table-container')];
+            
+            elements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateY(20px)';
+                    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    
+                    setTimeout(() => {
+                        el.style.opacity = '1';
+                        el.style.transform = 'translateY(0)';
+                    }, 100);
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>

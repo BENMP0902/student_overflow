@@ -1,38 +1,16 @@
-# StudentOverflow
+# Proyecto de una API (PRogramacon Avanzada)
 
-StudentOverflow es un portal web que permite a estudiantes hacer y responder preguntas académicas. Inspirado en StackOverflow.
+Este es un proyecto donde estaremos arealizando una API con python y algunos componentes HTML
 
-## Características
-- Registro e inicio de sesión de usuarios.
-- Publicación y respuesta de preguntas.
-- Sistema de votación y comentarios.
-- Panel de administración (opcional).
+#### Lenguajes utilizados:
 
-## Instalación
+- Python
+- HTML
+- Markdown
+- CSS
+- JavaScript
 
-1. Clona este repositorio:
-    ```bash
-    git clone https://github.com/tu_usuario/StudentOverflow.git
-    cd StudentOverflow
-    ```
+Para ejecutar este repositorio tenemos que instalar todas las librerias que se encuentran en el archivo **requeriments.txt**.
+Para instalar estas librerias enecesitamos ejecutar el siguiente codigo en la consola `pip install -r requeriments.txt` o en su defecto `pip3 install -r requeriments.txt`.
 
-2. Crea un entorno virtual e instala las dependencias:
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # Linux/Mac
-    venv\Scripts\activate     # Windows
-    pip install -r requirements.txt
-    ```
-
-3. Configura las variables de entorno en un archivo `.env`.
-
-4. Ejecuta la aplicación:
-    ```bash
-    flask run
-    ```
-
-## Contribuciones
-Las contribuciones son bienvenidas. Por favor, crea un issue o haz un pull request.
-
-## Licencia
-Este proyecto está bajo la licencia MIT.
+Posterior a esto ya podemos ejecutar el codigo con el comando `python app.py`.
