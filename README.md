@@ -1,4 +1,4 @@
-# Proyecto de una API (PRogramacon Avanzada)
+# Proyecto de una API (Programacon Avanzada)
 
 Este es un proyecto donde estaremos arealizando una API con python y algunos componentes HTML
 
